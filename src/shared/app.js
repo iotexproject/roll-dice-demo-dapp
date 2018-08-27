@@ -17,6 +17,7 @@ import {FullScreen} from './common/full-screen';
 
 type Props = {
   googleTid: string,
+  locale: string,
 };
 
 export class App extends Component<Props> {
@@ -27,6 +28,7 @@ export class App extends Component<Props> {
   }
 
   render() {
+    const {locale} = this.props;
     return (
       <RootStyle>
         <Helmet
@@ -52,7 +54,9 @@ export class App extends Component<Props> {
             {rel: 'stylesheet', type: 'text/css', href: assetURL('/stylesheets/main.css')},
             {href: 'https://fonts.googleapis.com/css?family=Share+Tech|Actor', rel: 'stylesheet', type: 'text/css'},
           ]}
-        />
+        >
+          <html lang={locale}/>
+        </Helmet>
         <FullScreen>
           <Switch>
             <Route exact path='/' component={HomeContainer}/>
