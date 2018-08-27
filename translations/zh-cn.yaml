@@ -1,0 +1,12 @@
+meta.title: Boilerplate
+meta.description: Description
+topbar.brand: Brand
+topbar.home: HOME
+not_found.bar: Not Found
+not_found.title: Oops!
+not_found.info: We cannot find the page for you...
+iotex_address: IoTeX Address
+dice_start: 开始
+activity.rolldpos.chance: '您还有<strong>${chance}</strong>次机会'
+activity.rolldpos.earned: '您获得了<strong>${score}</strong>分！'
+rate_limit: 请稍后再试

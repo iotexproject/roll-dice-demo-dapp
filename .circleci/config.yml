@@ -1,0 +1,23 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: "circleci/node:8.11.3-browsers@sha256:1b4fe5ee819febca37a8cddaa9ec4f96e32858d4c58fe1e1d2cfca79cd0cdc20"
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm test
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
