@@ -1,6 +1,6 @@
 {
   "name": "roll-dice-demo-dapp",
-  "version": "1.0.14",
+  "version": "1.0.18",
   "description": "IoTeX Roll Dice Demo DApp",
   "main": "server.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "flow-install": "flow-typed install",
     "size": "ls -lh dist/",
     "bp": "npm run build-production && npm run size",
-    "kill": "lsof -n -i4TCP:4100 | grep LISTEN | awk '{ print $2 }' | xargs kill"
+    "kill": "lsof -n -i4TCP:4102 | grep LISTEN | awk '{ print $2 }' | xargs kill"
   },
   "nyc": {
     "include": [
@@ -94,7 +94,7 @@
     "jsdom-global": "3.0.2",
     "koa-bodyparser": "^4.2.1",
     "nyc": "12.0.2",
-    "onefx": "^1.0.17",
+    "onefx": "^1.0.18",
     "plugin-error": "1.0.1",
     "process": "0.11.10",
     "react": "16.4.2",

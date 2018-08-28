@@ -105,6 +105,8 @@ export const HomeContainer = connect(
                 <Icon url={assetURL('/logo.svg')}/>
               </LogoWrapper>
 
+              <h1 style={{marginTop: 0}}>{t('topbar.brand')}</h1>
+
               <EditableProfileField
                 desc={t('iotex_address')}
                 name='address'
@@ -147,7 +149,7 @@ export const Wrapper = styled('div', props => ({
   overflow: 'hidden',
   textAlign: 'center',
   backgroundColor: colors.ui01,
-  color: `${colors.ui01}!important`,
+  color: `${colors.text01}!important`,
   [media.palm]: {
     width: '100%',
   },

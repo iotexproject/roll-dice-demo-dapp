@@ -1,11 +1,11 @@
 meta.title: 掷骰子
 meta.description: IoTeX DApp Demo
-topbar.brand: 掷骰子
+topbar.brand: 掷骰子DApp演示
 topbar.home: 首页
 not_found.bar: 找不到此页面
 not_found.title: 蛤...
 not_found.info: 找不到此页面
-iotex_address: IoTeX 地址
+enter_iotex_address: 输入 IoTeX 地址并点击"开始"
 dice_start: 开始
 activity.rolldpos.chance: '您还有<strong>${chance}</strong>次机会'
 activity.rolldpos.earned: '您获得了<strong>${score}</strong>分！'

@@ -1,11 +1,11 @@
 meta.title: Roll Dice
 meta.description: IoTeX DApp Demo
-topbar.brand: Roll Dice
+topbar.brand: Roll Dice DApp Demo
 topbar.home: HOME
 not_found.bar: Not Found
 not_found.title: Oops!
 not_found.info: We cannot find the page for you...
-iotex_address: IoTeX Address
+enter_iotex_address: Enter IoTeX Address and Click "Start"
 activity.rolldpos.chance: 'You have <strong>${chance}</strong> chance(s) to roll the dice.'
 dice_start: START
 activity.rolldpos.earned: 'You have earned <strong>${score}</strong> points!'

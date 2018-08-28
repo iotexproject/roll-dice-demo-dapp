@@ -21,7 +21,7 @@ export class RollDPoSDice extends Component<Props> {
 
   render() {
     const {chance, diceResult, rolling} = this.props;
-    const {result, point, error} = diceResult || {};
+    const {point, error} = diceResult || {};
     let errorMessage = null;
     let diceResultMessage = null;
     if (error) {
@@ -38,11 +38,11 @@ export class RollDPoSDice extends Component<Props> {
     return (
       <div style={{backgroundColor: colors.ui02, minHeight: '367px', width: '100%'}}>
         <div
-          style={{padding: '45px 0', fontSize: '14pt', color: colors.text01}}
+          style={{padding: '0 0 45px 0', fontSize: '14pt', color: colors.text01}}
           dangerouslySetInnerHTML={{__html: t('activity.rolldpos.chance', {chance})}}>
         </div>
         <Dice
-          point={result}
+          point={point}
           rolling={rolling}
           onDice={this.props.onDice}
           disabled={chance <= 0}

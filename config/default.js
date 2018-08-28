@@ -5,7 +5,7 @@ dotenv.config();
 module.exports = {
   project: 'roll-dice-demo-dapp',
   server: {
-    port: process.env.PORT || 4100,
+    port: process.env.PORT || 4102,
     staticDir: './dist',
     delayInitMiddleware: false,
     cookie: {
