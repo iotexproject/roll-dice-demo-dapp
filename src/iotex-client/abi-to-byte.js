@@ -46,7 +46,7 @@ export function encodeArguments(args, userInput) {
     if (arg.name in userInput) {
       let value = userInput[arg.name];
       if (arg.type === 'address') {
-        value = decodeAddress(value);
+        value = decodeAddress(value).address;
       }
       values.push(value);
     } else {

@@ -1,7 +1,6 @@
 // @flow
 
 import bech32 from 'bech32';
-import {logger} from 'onefx/lib/integrated-gateways/logger';
 
 // eslint-disable-next-line max-statements,complexity
 function convertBits(words, fromBits, toBits) {
@@ -46,23 +45,23 @@ function toHex(i) {
   return hi;
 }
 
-export function decodeAddress(address: string): string {
+export function decodeAddress(address: string): {address: string, error: any} {
   try {
     const {prefix, words} = bech32.decode(address);
     if (prefix !== 'io' && prefix !== 'it') {
-      return '';
+      return {address: '', error: null};
     }
     const data = convertBits(words, 5, 8);
     if (data === null) {
-      return '';
+      return {address: '', error: null};
     }
     let retval = '';
     for (const i of data) {
       retval += toHex(i);
     }
-    return retval;
+    return {address: retval, error: null};
   } catch (error) {
-    logger.error(error);
-    return '';
+    // TODO: handle error
+    return {address: '', error};
   }
 }

@@ -1,9 +1,9 @@
 // @flow
 import {styled} from 'onefx/lib/styletron-react';
+import {t} from 'onefx/lib/iso-i18n';
 import {Flex} from './flex';
 import {colors} from './styles/style-color';
 import {fonts} from './styles/style-font';
-import {t} from 'onefx/lib/iso-i18n';
 
 export const FieldMargin = styled('div', {
   padding: '16px 0 16px 0',

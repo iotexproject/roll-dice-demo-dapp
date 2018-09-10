@@ -9,8 +9,8 @@ import {setGateways} from './gateways/set-gateways';
 export async function startServer() {
   const server = new Server(config);
   setMiddleware(server);
-  setServerRoutes(server);
   setGateways(server);
+  setServerRoutes(server);
 
   // eslint-disable-next-line no-process-env,no-undef
   const port = process.env.PORT || config.get('server.port');

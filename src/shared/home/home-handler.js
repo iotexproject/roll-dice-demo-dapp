@@ -1,8 +1,17 @@
+/* eslint-disable no-console,no-undef */
 import {createRateLimiter} from 'onefx/lib/middleware/rate-limiter-middleware';
 import {logger} from 'onefx/lib/integrated-gateways/logger';
 import bodyParser from 'koa-bodyparser';
 
 export function diceRolling(server) {
+  server
+    .gateways
+    .iotex
+    .methods
+    .deposit({value: 1000})
+    .then(r => logger.info(`deployed successfully, txHash is ${r}`))
+    .catch(err => logger.error(`failed to call depost ${err.stack}`));
+
   return async ctx => {
     try {
       const txHash = await server
