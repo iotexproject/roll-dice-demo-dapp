@@ -62,7 +62,11 @@ export const HomeContainer = connect(
   }
 
   onDice = () => {
-    this.setState({stage: STAGES.rolling});
+    this.setState({
+      stage: STAGES.rolling,
+      error: '',
+      diceResult: {},
+    });
     axiosInstance.post('/activity/roll-dpos/dice-rolling', {address: this.address})
       .then(
         ({data}) => {
@@ -118,6 +122,7 @@ export const HomeContainer = connect(
                 diceResult={{...diceResult, error}}
                 rolling={stage === STAGES.rolling}
                 onDice={this.onDice}
+                address={this.address}
               />
             </Flex>
           </Wrapper>

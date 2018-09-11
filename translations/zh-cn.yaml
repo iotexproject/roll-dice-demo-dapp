@@ -9,4 +9,5 @@ enter_iotex_address: 输入 IoTeX 地址并点击"开始"
 dice_start: 开始
 activity.rolldpos.chance: '您还有<strong>${chance}</strong>次机会'
 activity.rolldpos.earned: '您获得了<strong>${score}</strong>分！'
+activity.rolldpos.check_result: '点此查看余额变化详情'
 rate_limit: 请稍后再试

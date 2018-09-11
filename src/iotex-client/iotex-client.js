@@ -71,10 +71,11 @@ export class IotexClient {
   }
 
   async _signContractAbi({data, value}: { data: string, value: number }) {
+    const nonce = await this.getLatestNonce(this.opts.wallet.rawAddress);
     const request = {
       rawTransaction: {
         byteCode: data,
-        nonce: await this.getLatestNonce(this.opts.wallet.rawAddress),
+        nonce,
         gasLimit: '1000000',
         version: 1,
         amount: value,
@@ -96,6 +97,6 @@ export class IotexClient {
 
   async getLatestNonce(address: string) {
     const resp = await this.axios.post('/getAddressId', {id: address});
-    return resp && resp.data.address && resp.data.address.pendingNonce;
+    return (resp && resp.data.address && resp.data.address.pendingNonce) || 0;
   }
 }

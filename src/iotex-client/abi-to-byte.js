@@ -42,18 +42,21 @@ export function encodeArguments(args, userInput) {
   const values = [];
 
   (args || []).forEach(arg => {
-    types.push(arg.type);
-    if (arg.name in userInput) {
+    if (arg.type === 'bool') {
+      types.push('uint256');
+    } else {
+      types.push(arg.type);
+    }
+    if (userInput.hasOwnProperty(arg.name)) {
       let value = userInput[arg.name];
       if (arg.type === 'address') {
-        value = decodeAddress(value).address;
+        value = `0x${decodeAddress(value).address}`;
       }
       values.push(value);
     } else {
       values.push('');
     }
   });
-
   const encoded = ethereumjs.rawEncode(types, values);
   return encoded.toString('hex');
 }

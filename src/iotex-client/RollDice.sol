@@ -3,11 +3,12 @@ pragma solidity ^0.4.23;
 contract RollDice {
   function rollAward(string requestId, address target) public payable returns (uint256) {
     uint256 rollVal = roll(requestId);
-    target.transfer(rollVal * 1000000000000000000);
+    target.transfer(rollVal);
+    return rollVal;
   }
 
   function roll(string requestId) public view returns (uint256) {
-    return bytesToUint(sha256(abi.encodePacked(block.difficulty, requestId, block.timestamp))) % 5;
+    return (bytesToUint(sha256(abi.encodePacked(block.difficulty, requestId, block.timestamp))) % 5) + 1;
   }
 
   function bytesToUint(bytes32 b) private pure returns (uint256) {

@@ -9,4 +9,5 @@ enter_iotex_address: Enter IoTeX Address and Click "Start"
 activity.rolldpos.chance: 'You have <strong>${chance}</strong> chance(s) to roll the dice.'
 dice_start: START
 activity.rolldpos.earned: 'You have earned <strong>${score}</strong> points!'
+activity.rolldpos.check_result: Go to Account Details
 rate_limit: Please try again later...

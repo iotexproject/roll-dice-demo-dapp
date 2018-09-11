@@ -18,12 +18,11 @@ export function diceRolling(server) {
         .gateways
         .iotex
         .methods
-        .rollAward(String(Date.now()),
-          ctx.request.body.address);
+        .rollAward(String(Date.now()), ctx.request.body.address);
       logger.debug(`txHash is ${txHash}`);
 
       const chance = 5;
-      const point = 4;
+      const point = (Math.floor(Math.random() * 10) % 6) + 1;
       const dicePoint = 6;
       return ctx.response.body = {
         ok: true,
@@ -46,7 +45,7 @@ export function setHomeHandlers(server) {
   const rateLimiterFactory = (endpoint, interval, max) => createRateLimiter(
     server,
     {
-      interval: {min: interval},
+      interval: {sec: interval},
       max,
       generateKey: ctx => `${endpoint}-${ctx.body && ctx.body.address}`,
     },
@@ -56,7 +55,7 @@ export function setHomeHandlers(server) {
     'activity.dice_rolling',
     '/activity/roll-dpos/dice-rolling/',
     bodyParser(),
-    rateLimiterFactory('activity.dice_rolling', 30, 12), // per user per 30 min 12 times max
+    rateLimiterFactory('activity.dice_rolling', 10, 1),
     diceRolling(server),
   );
 }
