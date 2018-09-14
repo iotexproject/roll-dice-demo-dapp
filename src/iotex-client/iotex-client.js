@@ -99,4 +99,9 @@ export class IotexClient {
     const resp = await this.axios.post('/getAddressId', {id: address});
     return (resp && resp.data.address && resp.data.address.pendingNonce) || 0;
   }
+
+  async getReceiptByExecutionId(hash: string) {
+    const resp = await this.axios.post('/getExecutionReceipt', {id: hash});
+    return resp && resp.data.receipt;
+  }
 }

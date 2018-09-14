@@ -34,6 +34,7 @@ type Props = {
 type State = {
   stage: string,
   chance: number,
+  txHash: string,
   diceResult: any,
   error: string,
 };
@@ -58,8 +59,36 @@ export const HomeContainer = connect(
       stage,
       diceResult: null,
       error: '',
+      txHash: null,
     };
   }
+
+  fetchDiceResult = (txHash) => {
+    axiosInstance.post('/activity/roll-dpos/fetch-dice-result', {hash: this.state.txHash})
+    .then(
+      ({data}) => {
+        if (data.ok) {
+          this.setState({
+            diceResult: {
+              point: data.point,
+              result: data.dicePoint,
+              time: data.time,
+            },
+            stage: STAGES.dice,
+          });
+        } else {
+          this.setState({
+            stage: STAGES.exception,
+            error: data.error || 'Something went wrong.',
+          });
+        }
+      }
+    )
+    .catch(e => this.setState({
+      state: STAGES.execption,
+      error: e.response.data && e.response.data.error.message || "Something went wrong.",
+    }));
+  };
 
   onDice = () => {
     this.setState({
@@ -71,18 +100,11 @@ export const HomeContainer = connect(
       .then(
         ({data}) => {
           if (data.ok) {
-            const delayedFn = () => {
-              this.setState({
-                chance: data.chance,
-                diceResult: {
-                  point: data.point,
-                  result: data.dicePoint,
-                  time: data.time,
-                },
-                stage: STAGES.dice,
-              });
-            };
-            window.setTimeout(delayedFn, 2000);
+            this.setState({
+              txHash: data.txHash,
+              chance: data.chance,
+            });
+            window.setTimeout(this.fetchDiceResult, 10000);
           } else {
             this.setState({
               stage: STAGES.exception,

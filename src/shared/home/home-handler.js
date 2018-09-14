@@ -21,14 +21,10 @@ export function diceRolling(server) {
         .rollAward(String(Date.now()), ctx.request.body.address);
       logger.debug(`txHash is ${txHash}`);
 
-      const chance = 5;
-      const point = (Math.floor(Math.random() * 10) % 6) + 1;
-      const dicePoint = 6;
       return ctx.response.body = {
         ok: true,
-        chance: chance - 1,
-        point,
-        dicePoint,
+        chance: ctx.request.body.chance - 1,
+        txHash,
       };
     } catch (e) {
       logger.error(`failed to roll dice ${e.stack}`);
@@ -37,6 +33,26 @@ export function diceRolling(server) {
         error: e.message,
       };
     }
+  };
+}
+
+function fetchDiceResult(server) {
+  return async ctx => {
+    const txHash = ctx.request.body.hash;
+    const receipt = await server.gateways.iotex.getReceiptByExecutionId(txHash);
+    if (receipt && receipt.status) {
+      const point = parseInt(receipt.returnValue, 16);
+      const dicePoint = point;
+      return ctx.response.body = {
+        ok: true,
+        point,
+        dicePoint,
+      };
+    }
+    return ctx.response.body = {
+      ok: false,
+      error: 'The execution was failed or not mined.',
+    };
   };
 }
 
@@ -51,6 +67,13 @@ export function setHomeHandlers(server) {
     },
   );
 
+  server.post(
+    'activity.fetch_dice_result',
+    '/activity/roll-dpos/fetch-dice-result/',
+    bodyParser(),
+    rateLimiterFactory('activity.fetch_dice_result', 10, 1),
+    fetchDiceResult(server),
+  );
   server.post(
     'activity.dice_rolling',
     '/activity/roll-dpos/dice-rolling/',
