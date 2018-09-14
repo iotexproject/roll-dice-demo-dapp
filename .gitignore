@@ -43,7 +43,7 @@ jspm_packages
 .DS_Store
 
 # flow-typed definitions
-flow-typed/
+flow-typed/npm/
 
 *-translations/
 .env

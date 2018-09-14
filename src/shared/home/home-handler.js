@@ -9,8 +9,8 @@ export function diceRolling(server) {
     .iotex
     .methods
     .deposit({value: 1000})
-    .then(r => logger.info(`deployed successfully, txHash is ${r}`))
-    .catch(err => logger.error(`failed to call depost ${err.stack}`));
+    .then(r => logger.info(`deposit successfully, txHash is ${r}`))
+    .catch(err => logger.error(`failed to call deposit ${err.stack}`));
 
   return async ctx => {
     try {
@@ -61,6 +61,7 @@ export function setHomeHandlers(server) {
   const rateLimiterFactory = (endpoint, interval, max) => createRateLimiter(
     server,
     {
+      limiterName: endpoint,
       interval: {sec: interval},
       max,
       generateKey: ctx => `${endpoint}-${ctx.body && ctx.body.address}`,
