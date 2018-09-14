@@ -1,11 +1,12 @@
 // @flow
-import axios from 'axios';
 import {get} from 'dotty';
+import type {Provider} from './provider';
 import {encodeInputData, getAbiFunctions} from './abi-to-byte';
 
+const NONCE_DELTA = 10;
+
 type Opts = {
-  providerUrl: string,
-  timeout: number,
+  provider: Provider,
   solFile: string,
   contractName: string,
   contractAddress: string,
@@ -16,27 +17,33 @@ type Opts = {
   },
 };
 
-type RawTransaction = {
-  byteCode: string,
-  nonce: number,
-  gasLimit: string,
+type SignedTransaction = {
   version: number,
-  contract: string, // address
-}
+  nonce: number,
+  signature: string,
+  executor: string,
+  contract: string,
+  executorPubKey: string,
+  gas: number,
+  gasPrice: number,
+  data: string,
+  ID: string,
+  amount: number,
+  blockID: string,
+  isPending: boolean,
+  timestamp: number,
+};
 
 export class IotexClient {
   opts: Opts;
-  axios: any;
+  provider: any;
   _abiFunctions: any;
 
   methods: { [funcName: string]: any };
 
   constructor(opts: Opts) {
     this.opts = opts;
-    this.axios = axios.create({
-      baseURL: opts.providerUrl,
-      timeout: opts.timeout || 100000,
-    });
+    this.provider = opts.provider;
     this._abiFunctions = getAbiFunctions({solFile: opts.solFile, contractName: opts.contractName});
 
     // mount methods
@@ -56,47 +63,49 @@ export class IotexClient {
           const data = encodeInputData(this._abiFunctions, func, userInput);
           const value = get(args, `${args.length - 1}.value`);
           const resp = await this._signContractAbi({data, value});
-          if (!resp.ok) {
-            throw new Error(`cannot signContractAbi: ${JSON.stringify(resp)}`);
+          if (resp.error) {
+            throw new Error(`cannot signContractAbi: ${JSON.stringify(resp.error)}`);
           }
 
-          const {ok, hash} = await this._sendTransaction(resp.rawTransaction);
-          if (!ok) {
-            throw new Error('cannot sendTransaction');
+          const {error, result} = await this._sendTransaction(resp.result.signedTransaction);
+          if (error) {
+            throw new Error(`cannot sendTransaction: ${JSON.stringify(error)}`);
           }
-          return hash;
+          return result.hash;
         };
       }
     }
   }
 
   async _signContractAbi({data, value}: { data: string, value: number }) {
-    const nonce = await this.getLatestNonce(this.opts.wallet.rawAddress);
+    const nonce = await this.getLatestNonce(this.opts.wallet.rawAddress) + NONCE_DELTA;
     const request = {
       rawTransaction: {
-        byteCode: data,
-        nonce,
+        byteCode: data || '',
+        nonce: nonce || 0,
         gasLimit: '1000000',
         version: 1,
-        amount: value,
+        amount: value || 0,
         contract: this.opts.contractAddress,
       },
       wallet: this.opts.wallet,
     };
-    return (await this.axios.post('/wallet/transaction/signContractAbi', request)).data;
+    return await this.provider.send({method: 'JsonRpc.signContractAbi', params: [request]});
   }
 
-  async _sendTransaction(rawTransaction: RawTransaction) {
-    // convert args address to 20 bytes
+  async _sendTransaction(transaction: SignedTransaction) {
     const request = {
-      rawTransaction,
+      signedTransaction: transaction,
       type: 'contract',
     };
-    return (await this.axios.post('/wallet/transaction/sendTransaction', request)).data;
+    return await this.provider.send({method: 'JsonRpc.sendTransaction', params: [request]});
   }
 
   async getLatestNonce(address: string) {
-    const resp = await this.axios.post('/getAddressId', {id: address});
-    return (resp && resp.data.address && resp.data.address.pendingNonce) || 0;
+    const resp = await this.provider.send({
+      method: 'JsonRpc.getAddressId',
+      params: [{id: address}],
+    });
+    return (resp && resp.result && resp.result.pendingNonce) || 0;
   }
 }
