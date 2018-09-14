@@ -59,35 +59,35 @@ export const HomeContainer = connect(
       stage,
       diceResult: null,
       error: '',
-      txHash: null,
+      txHash: '',
     };
   }
 
-  fetchDiceResult = (txHash) => {
+  fetchDiceResult = txHash => {
     axiosInstance.post('/activity/roll-dpos/fetch-dice-result', {hash: this.state.txHash})
-    .then(
-      ({data}) => {
-        if (data.ok) {
-          this.setState({
-            diceResult: {
-              point: data.point,
-              result: data.dicePoint,
-              time: data.time,
-            },
-            stage: STAGES.dice,
-          });
-        } else {
-          this.setState({
-            stage: STAGES.exception,
-            error: data.error || 'Something went wrong.',
-          });
+      .then(
+        ({data}) => {
+          if (data.ok) {
+            this.setState({
+              diceResult: {
+                point: data.point,
+                result: data.dicePoint,
+                time: data.time,
+              },
+              stage: STAGES.dice,
+            });
+          } else {
+            this.setState({
+              stage: STAGES.exception,
+              error: data.error || 'Something went wrong.',
+            });
+          }
         }
-      }
-    )
-    .catch(e => this.setState({
-      state: STAGES.execption,
-      error: e.response.data && e.response.data.error.message || "Something went wrong.",
-    }));
+      )
+      .catch(e => this.setState({
+        stage: STAGES.exception,
+        error: e.response.data && e.response.data.error.message || 'Something went wrong.',
+      }));
   };
 
   onDice = () => {

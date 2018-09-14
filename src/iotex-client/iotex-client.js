@@ -3,7 +3,7 @@ import {get} from 'dotty';
 import type {Provider} from './provider';
 import {encodeInputData, getAbiFunctions} from './abi-to-byte';
 
-const NONCE_DELTA = 10;
+const NONCE_DELTA = 1;
 
 type Opts = {
   provider: Provider,
@@ -110,7 +110,9 @@ export class IotexClient {
   }
 
   async getReceiptByExecutionId(hash: string) {
-    const resp = await this.axios.post('/getExecutionReceipt', {id: hash});
-    return resp && resp.data.receipt;
+    const resp = await this.provider.send(
+      {method: 'JsonRpc.getReceiptByExecutionId', params: [hash]}
+    );
+    return resp && resp.result && resp.result;
   }
 }
