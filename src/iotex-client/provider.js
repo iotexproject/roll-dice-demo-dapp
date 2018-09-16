@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 
-type Request = {
+export type Request = {
   method: string,
   params: Array<any>,
 }
