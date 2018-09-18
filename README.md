@@ -1,20 +1,25 @@
-# roll-dice-demo-dapp
+# Roll Dice Demo DApp
 
-This is a demo of web DApp based on [IoTeX blockchain](https://iotexscan.io/). You can see the site [here](https://rolldicedapp.herokuapp.com).
+This is a demo of web DApp based on [IoTeX blockchain](https://iotexscan.io/). You can visit the site [here](https://rolldicedapp.herokuapp.com).
 
 ## Setup Development Environment
 
-Download roll-dice-demo-app code
+Download the source code
 
 ```bash
 git clone git@github.com:iotexproject/roll-dice-demo-dapp.git
 ```
 
-And install node version manager by following instructions [here](https://github.com/creationix/nvm#installation). Or if
-you have
+Then install node version manager by following instructions [here](https://github.com/creationix/nvm#installation).  Alternatively, if
+you have nvm already.
 
 ```bash
 nvm use 8.11.4
+```
+
+Install dependencies.
+
+```bash
 npm install
 ```
 
@@ -29,7 +34,8 @@ cp ./.env.tmpl ./.env
 ```bash
 npm run watch
 ```
-And visit [[http://localhost:4102]]
+
+Visit http://localhost:4102
 
 
 ## Deploy
