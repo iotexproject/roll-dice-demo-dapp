@@ -71,7 +71,5 @@ module.exports = {
   },
   providerUrl: process.env.PROVIDER_URL,
   contractAddress: process.env.CONTRACT_ADDRESS,
-  walletPublicKey: process.env.WALLET_PUBLIC_KEY,
-  walletPrivateKey: process.env.WALLET_PRIVATE_KEY,
-  walletRawAddress: process.env.WALLET_RAW_ADDRESS,
+  accounts: JSON.parse(process.env.ACCOUNTS),
 };

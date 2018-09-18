@@ -5,6 +5,6 @@
 
 [libs]
 ./node_modules/fbjs/flow/lib/dev.js
-./flow-typed/**
+./flow-typed/**/*
 
 [options]

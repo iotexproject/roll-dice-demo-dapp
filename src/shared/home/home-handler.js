@@ -4,14 +4,6 @@ import {logger} from 'onefx/lib/integrated-gateways/logger';
 import bodyParser from 'koa-bodyparser';
 
 export function diceRolling(server) {
-  server
-    .gateways
-    .iotex
-    .methods
-    .deposit({value: 1000})
-    .then(r => logger.info(`deposit successfully, txHash is ${r}`))
-    .catch(err => logger.error(`failed to call deposit ${err.stack}`));
-
   return async ctx => {
     try {
       const txHash = await server
@@ -19,7 +11,7 @@ export function diceRolling(server) {
         .iotex
         .methods
         .rollAward(String(Date.now()), ctx.request.body.address);
-      logger.debug(`txHash is ${txHash}`);
+      logger.info(`rollAward txHash is ${txHash}`);
 
       return ctx.response.body = {
         ok: true,
@@ -40,7 +32,7 @@ function fetchDiceResult(server) {
   return async ctx => {
     const txHash = ctx.request.body.hash;
     const receipt = await server.gateways.iotex.getReceiptByExecutionId(txHash);
-    console.log('receipt', receipt);
+    server.logger.info(`receipt for ${txHash} is ${receipt}`);
     if (receipt && receipt.status) {
       const point = parseInt(receipt.returnValue, 16);
       const dicePoint = point;
