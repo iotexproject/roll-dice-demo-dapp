@@ -25,6 +25,10 @@ class IotexClientPool {
   get next() {
     this.cur += 1;
     this.cur = this.cur % this.len;
+    return this.current;
+  }
+
+  get current() {
     return this.clients[this.cur];
   }
 
@@ -33,9 +37,7 @@ class IotexClientPool {
   }
 
   async getReceiptByExecutionId(txHash) {
-    this.cur += 1;
-    this.cur = this.cur % this.len;
-    return await this.next.getReceiptByExecutionId(txHash);
+    return await this.current.getReceiptByExecutionId(txHash);
   }
 }
 

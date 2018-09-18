@@ -50,7 +50,7 @@ export class RollDPoSDice extends Component<Props> {
         {/* dangerouslySetInnerHTML={{__html: t('activity.rolldpos.chance', {chance})}}>*/}
         {/* </div>*/}
         <Dice
-          point={point}
+          point={point / 10}
           rolling={rolling}
           onDice={this.props.onDice}
           disabled={chance <= 0}

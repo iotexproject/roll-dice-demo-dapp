@@ -32,7 +32,7 @@ function fetchDiceResult(server) {
   return async ctx => {
     const txHash = ctx.request.body.hash;
     const receipt = await server.gateways.iotex.getReceiptByExecutionId(txHash);
-    server.logger.info(`receipt for ${txHash} is ${receipt}`);
+    server.logger.info(`receipt for ${txHash} is ${JSON.stringify(receipt)}`);
     if (receipt && receipt.status) {
       const point = parseInt(receipt.returnValue, 16);
       const dicePoint = point;

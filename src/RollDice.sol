@@ -2,7 +2,7 @@ pragma solidity ^0.4.23;
 
 contract RollDice {
   function rollAward(string requestId, address target) public payable returns (uint256) {
-    uint256 rollVal = roll(requestId);
+    uint256 rollVal = roll(requestId) * 10;
     target.transfer(rollVal);
     return rollVal;
   }
